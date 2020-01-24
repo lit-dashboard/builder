@@ -8,6 +8,7 @@ import { dirname } from 'path-webpack';
 import { isElectron } from '../setup';
 import { isDev } from 'electron-is-dev';
 import { readFileSync, writeFileSync, existsSync, watch } from 'fs';
+import { remote } from 'electron';
 
 class RobotDashboards extends LitElement {
 
@@ -75,8 +76,7 @@ class RobotDashboards extends LitElement {
     };
 
     try {
-      const { remote: { dialog } } = window;
-      const { canceled, filePaths } = await dialog.showOpenDialog(options);
+      const { canceled, filePaths } = await remote.dialog.showOpenDialog(options);
       if (!canceled) {
         dashboard.storage.setDashboardPath(filePaths[0]);
         window.location.reload();
