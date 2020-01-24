@@ -2,8 +2,8 @@ import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html'
 
 import { 
-  get as getProvider, 
-  getNames as getProviderNames 
+  getSourceProvider,
+  getSourceProviderNames
 } from '../source-providers';
 import { isNull } from 'lodash';
 
@@ -64,7 +64,7 @@ class SourceProviderSettings extends LitElement {
         if (mutation.type === 'childList') {
           for (let node of mutation.addedNodes) {
             if ('hasAttribute' in node && node.hasAttribute('provider-name')) {
-              const provider = getProvider(node.getAttribute('provider-name'));
+              const provider = getSourceProvider(node.getAttribute('provider-name'));
               node.settings = { ...provider.settings };
               node.addEventListener('settings-change', (ev) => {
                 provider.onSettingsChange(ev.detail.settings);
@@ -82,8 +82,8 @@ class SourceProviderSettings extends LitElement {
   render() {
     return html`
       <vaadin-tabs orientation="vertical" theme="minimal small" @selected-changed="${this.onTabSelection}">
-        ${getProviderNames().map(name => {
-          const provider = getProvider(name);
+        ${getSourceProviderNames().map(name => {
+          const provider = getSourceProvider(name);
           const { settingsElementName } = provider;
 
           if (!isNull(settingsElementName)) {
@@ -96,8 +96,8 @@ class SourceProviderSettings extends LitElement {
         })}
       </vaadin-tabs>
       <div class="settings">
-        ${getProviderNames().map((name, index) => {
-          const provider = getProvider(name);
+        ${getSourceProviderNames().map((name, index) => {
+          const provider = getSourceProvider(name);
           const { settingsElementName } = provider;
 
           if (this.selectedTab === index && !isNull(settingsElementName)) {

@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
-import store from '../redux/store';
+import store from '@lit-dashboard/lit-dashboard/store';
 import { connect } from 'pwa-helpers';
 import { map } from 'lodash';
 import './widget-menu-item';

@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
-import store from '../../redux/store';
+import store from '@lit-dashboard/lit-dashboard';
 import { connect } from 'pwa-helpers';
 import './source';
 import { map } from 'lodash';
@@ -58,7 +58,7 @@ class SourcesView extends connect(store)(LitElement) {
     const oldValue = this._providerName;
     this._providerName = value;
     this.requestUpdate('providerName', oldValue);
-    this.sources = dashboard.store.getState().sources[value] || {};
+    this.sources = store.getState().sources[value] || {};
   }
 
   stateChanged(state) {

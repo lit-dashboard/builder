@@ -1,5 +1,6 @@
-import { isEditModeOn } from './storage';
+import { isEditModeOn } from '@lit-dashboard/lit-dashboard/storage';
 import { remote } from 'electron';
+import { triggerEvent } from './events';
 
 const { Menu, MenuItem, app } = remote;
 
@@ -14,14 +15,14 @@ let fileMenuItem = new MenuItem({
       label: 'Save', 
       accelerator: 'CommandOrControl+S',
       click() { 
-        dashboard.events.trigger('fileMenuSave');
+        triggerEvent('fileMenuSave');
       } 
     },
     { 
       label: 'Open', 
       accelerator: 'CommandOrControl+O',
       click() { 
-        dashboard.events.trigger('fileMenuOpen');
+        triggerEvent('fileMenuOpen');
       } 
     },
     { type: 'separator' },
@@ -43,13 +44,13 @@ let dashboardMenuItem = new MenuItem({
       checked: isEditModeOn(),
       accelerator: 'CommandOrControl+E',
       click(event) {
-        dashboard.events.trigger('fileMenuEditMode', event.checked);
+        triggerEvent('fileMenuEditMode', event.checked);
       } 
     },
     { 
       label: 'Source Settings',
       click() { 
-        dashboard.events.trigger('fileMenuSourceProviderSettings');
+        triggerEvent('fileMenuSourceProviderSettings');
       } 
     },
   ] 

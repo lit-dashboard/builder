@@ -1,9 +1,12 @@
 import { LitElement, html, css } from 'lit-element';
-import { isEditModeOn, turnEditModeOn, turnEditModeOff } from '../storage';
+import { 
+  isEditModeOn, turnEditModeOn, turnEditModeOff 
+} from '@lit-dashboard/lit-dashboard/storage';
 import './side-panel';
 import './robot-dashboards';
 import './source-provider-settings-modal';
 import '@material/mwc-drawer';
+import { onEvent } from '../events';
 
 class DashboardApp extends LitElement {
 
@@ -45,19 +48,19 @@ class DashboardApp extends LitElement {
     const drawerNode = this.shadowRoot.querySelector('mwc-drawer');
 
     
-    dashboard.events.on('fileMenuSave', () => {
+    onEvent('fileMenuSave', () => {
       dashboardsNode.saveDashboardConfig();
     });
 
-    dashboard.events.on('fileMenuOpen', () => {
+    onEvent('fileMenuOpen', () => {
       dashboardsNode.openSavedDashboard();
     });
 
-    dashboard.events.on('fileMenuSourceProviderSettings', () => {
+    onEvent('fileMenuSourceProviderSettings', () => {
       sourceProviderSettingsModalNode.open();
     });
 
-    dashboard.events.on('fileMenuEditMode', editModeOn => {
+    onEvent('fileMenuEditMode', editModeOn => {
       this.showSidePanel = editModeOn;
       if (editModeOn) {
         turnEditModeOn();
@@ -135,4 +138,6 @@ class DashboardApp extends LitElement {
   }
 }
 
-customElements.define('dashboard-app', DashboardApp);
+setTimeout(() => {
+  customElements.define('dashboard-app', DashboardApp);
+}, 1000);

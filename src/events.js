@@ -1,6 +1,6 @@
 const callbacks = {};
 
-export const on = (eventName, callback) => {
+export const onEvent = (eventName, callback) => {
   if (typeof callbacks[eventName] === 'undefined') {
     callbacks[eventName] = [];
   }
@@ -8,7 +8,7 @@ export const on = (eventName, callback) => {
   callbacks[eventName].push(callback);
 };
 
-export const trigger = (eventName, ...args) => {
+export const triggerEvent = (eventName, ...args) => {
   if (eventName in callbacks) {
     callbacks[eventName].forEach(callback => {
       if (typeof callback === 'function') {

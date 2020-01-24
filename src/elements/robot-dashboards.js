@@ -9,6 +9,10 @@ import { isElectron } from '../setup';
 import { isDev } from 'electron-is-dev';
 import { readFileSync, writeFileSync, existsSync, watch } from 'fs';
 import { remote } from 'electron';
+import { storage, store } from '@lit-dashboard/lit-dashboard';
+import toastr from 'toastr';
+import { onEvent } from '../events';
+import { getPageX, getPageY } from '../mouse';
 
 class RobotDashboards extends LitElement {
 
@@ -68,7 +72,7 @@ class RobotDashboards extends LitElement {
   async openSavedDashboard() {
     const options = {
       title: 'Open Layout',
-      defaultPath: dashboard.storage.getDashboardPath(),
+      defaultPath: storage.getDashboardPath(),
       properties: ['openFile'],
       filters: [
         { name: 'Javascript files', extensions: ['js'] }
@@ -78,19 +82,19 @@ class RobotDashboards extends LitElement {
     try {
       const { canceled, filePaths } = await remote.dialog.showOpenDialog(options);
       if (!canceled) {
-        dashboard.storage.setDashboardPath(filePaths[0]);
+        storage.setDashboardPath(filePaths[0]);
         window.location.reload();
       }
     }
     catch(e) {
-      dashboard.toastr.error(`Failed to open Dashboard: ${e.message}`);
+      toastr.error(`Failed to open Dashboard: ${e.message}`);
     }
   }
 
   getSavedDashboard() {
     try {
-      if (dashboard.storage.hasDashboardPath()) {
-        const dashboardPath = dashboard.storage.getDashboardPath();
+      if (storage.hasDashboardPath()) {
+        const dashboardPath = storage.getDashboardPath();
 
         if (isElectron) {
           
@@ -111,7 +115,7 @@ class RobotDashboards extends LitElement {
           }
         }
         
-        dashboard.storage.setDashboardConfig(
+        storage.setDashboardConfig(
           this.getSavedDashboardConfig()
         );
 
@@ -121,8 +125,8 @@ class RobotDashboards extends LitElement {
     catch(e) {
       console.error('Error opening dashboard', e);
     }
-    window.require('../widgets');
-    window.require('../source-providers');
+    //window.require('../widgets');
+    //window.require('../source-providers');
     this.requestUpdate();
   }
 
@@ -144,19 +148,19 @@ class RobotDashboards extends LitElement {
       config.providerSettings[name] = provider.settings;
     });
 
-    const configPath = dashboard.storage.getDashboardConfigPath();
+    const configPath = storage.getDashboardConfigPath();
     try {
       writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
-      dashboard.toastr.success(`Layout saved to ${configPath}`); 
+      toastr.success(`Layout saved to ${configPath}`); 
     }
     catch(e) {
-      dashboard.toastr.error(`Failed to save layout: ${e.message}`);
+      toastr.error(`Failed to save layout: ${e.message}`);
     }
   }
 
   getSavedDashboardConfig() {
 
-    const configPath = dashboard.storage.getDashboardConfigPath();
+    const configPath = storage.getDashboardConfigPath();
 
     try {
       if (!existsSync(configPath)) {
@@ -166,14 +170,14 @@ class RobotDashboards extends LitElement {
       return config;
     }
     catch(e) {
-      dashboard.toastr.error(`Failed to open layout: ${e.message}`);
+      toastr.error(`Failed to open layout: ${e.message}`);
       return {};
     }
   }
 
   getWidgetTypes() {
     return Object
-      .keys(dashboard.store.getState().widgets.registered)
+      .keys(store.getState().widgets.registered)
       .map(widgetType => widgetType.toLowerCase());
   }
 
@@ -190,13 +194,13 @@ class RobotDashboards extends LitElement {
     const widgetId = widgetNode.getAttribute('widget-id');
     if (!widgetId) {
       // TODO: Make link that selects element in DOM?
-      dashboard.toastr.error(`Widget of type ${widgetType} does not have a 'widget-id' attribute.`);
+      toastr.error(`Widget of type ${widgetType} does not have a 'widget-id' attribute.`);
       return;
     }
 
     if (widgetId in this.widgets) {
       // TODO: Make link that selects element in DOM?
-      dashboard.toastr.error(`Widget of type ${widgetType} with widget-id '${widgetId}' already exists!`);
+      toastr.error(`Widget of type ${widgetType} with widget-id '${widgetId}' already exists!`);
       return;
     }
 
@@ -206,14 +210,14 @@ class RobotDashboards extends LitElement {
   firstUpdated() {
     this.getSavedDashboard();
 
-    dashboard.events.on('widgetAdded', node => {
+    onEvent('widgetAdded', node => {
       this.setupWidget(node, node.nodeName.toLowerCase());
     });
 
     $(window).on('mousemove drag', (ev) => {
 
-      const x = dashboard.mouse.getPageX();
-      const y = dashboard.mouse.getPageY();
+      const x = getPageX();
+      const y = getPageY();
 
       if (!this.selectedWidget) {
         for (let widget in this.widgets) {
@@ -295,7 +299,7 @@ class RobotDashboards extends LitElement {
     const widgetNode = this.widgets[this.selectedWidget];
 
     if (!widgetNode) {
-      dashboard.toastr.error(`
+      toastr.error(`
         Failed to add source '${sourceKey}'. No widget at that 
         position can be found.`
       );

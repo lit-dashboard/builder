@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit-element';
 import './widget-menu';
 import './sources-view';
 import '@vaadin/vaadin-tabs';
-import store from "../redux/store";
+import store from '@lit-dashboard/lit-dashboard/store';
 import { connect } from 'pwa-helpers';
 
 class SidePanel extends connect(store)(LitElement) {

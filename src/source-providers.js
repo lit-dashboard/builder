@@ -1,12 +1,5 @@
-import { 
-  isString, 
-  isNumber, 
-  isBoolean, 
-  isArray, 
-  isNull, 
-  kebabCase 
-} from 'lodash';
-import ProviderSettings from './elements/provider-settings';
+import { isNull, kebabCase } from 'lodash';
+import { ProviderSettings } from '@lit-dashboard/lit-dashboard';
 
 const providerTypes = {};
 const providers = {};
@@ -27,48 +20,7 @@ const getSettingsElementName = constructor => {
   return kebabCase(typeName) + '-settings'; 
 };
 
-export class SourceProvider {
-  
-  static get typeName() {
-    return null;
-  }
-
-  static get settingsElement() {
-    return null;
-  }
-
-  static get settingsDefaults() {
-		return {};
-  }
-
-  get settings() {
-    return {};
-  }
-
-  get settingsElementName() {
-    return getSettingsElementName(this.constructor);
-  }
-
-  onSettingsChange(settings) {}
-
-  updateFromProvider() {}
-  updateFromDashboard() {}
-
-  getType(value) {
-    if (isString(value)) {
-      return 'String';
-    } else if (isNumber(value)) {
-      return 'Number';
-    } else if (isBoolean(value)) {
-      return 'Boolean';
-    } else if (isArray(value)) {
-      return 'Array';
-    }
-    return null;
-  }
-}
-
-export const addType = (constructor) => {
+export const addSourceProviderType = (constructor) => {
 
   const { typeName } = constructor;
 
@@ -103,11 +55,11 @@ export const addType = (constructor) => {
   }
 }
 
-export const hasType = (typeName) => {
+export const hasSourceProviderType = (typeName) => {
   return typeName in providerTypes;
 }
 
-export const add = (type, name, settings = {}) => {
+export const addSourceProvider = (type, name, settings = {}) => {
   
   if (typeof name !== 'string') {
     name = type;
@@ -120,14 +72,14 @@ export const add = (type, name, settings = {}) => {
   return providers[name] = new providerTypes[type](settings);
 };
 
-export const get = (providerName) => {
+export const getSourceProvider = (providerName) => {
   return providers[providerName];
 };
 
-export const getNames = () => {
+export const getSourceProviderNames = () => {
   return Object.keys(providers);
 };
 
-export const has = (providerName) => {
+export const hasSourceProvider = (providerName) => {
   return providerName in providers;
 };
