@@ -1,6 +1,6 @@
 {
   "name": "@lit-dashboard/builder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -96,6 +96,7 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
+    "@lit-dashboard/lit-dashboard": "^1.0.2",
     "@material/mwc-drawer": "^0.12.0",
     "@tarp/require": "^1.3.0",
     "@vaadin/vaadin": "^14.1.3",
