@@ -1,3 +1,5 @@
 node_modules
 src
 dist
+build/app.js
+lit-dashboard-builder*
