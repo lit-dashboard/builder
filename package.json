@@ -55,7 +55,8 @@
   },
   "homepage": "https://github.com/lit-dashboard/builder#readme",
   "bin": {
-    "create-dashboard": "./bin/create.js"
+    "create-dashboard": "./bin/create.js",
+    "create": "./bin/create.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
