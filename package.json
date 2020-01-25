@@ -1,6 +1,6 @@
 {
   "name": "@lit-dashboard/builder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -12,6 +12,7 @@
   },
   "build": {
     "appId": "yourappid",
+    "productName": "lit-dashboard",
     "files": [
       "build/",
       "node_modules/",
