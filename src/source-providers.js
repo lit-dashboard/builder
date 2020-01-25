@@ -1,5 +1,5 @@
 import { isNull, kebabCase } from 'lodash';
-import { ProviderSettings } from '@lit-dashboard/lit-dashboard';
+import { ProviderSettings, SourceProvider } from '@lit-dashboard/lit-dashboard';
 
 const providerTypes = {};
 const providers = {};
@@ -11,7 +11,7 @@ const getSettingsElementName = constructor => {
     return null;
   }
   const isProviderSettings = 
-    settingsElement.prototype instanceof ProviderSettings;
+    Object.getPrototypeOf(settingsElement.constructor).name === 'ProviderSettings';
 
   if (!isProviderSettings) {
     return null;
@@ -21,14 +21,15 @@ const getSettingsElementName = constructor => {
 };
 
 export const addSourceProviderType = (constructor) => {
-
+  
   const { typeName } = constructor;
 
-  if (hasType(typeName)) {
+  if (hasSourceProviderType(typeName)) {
     return;
   }
 
-  if (constructor.prototype instanceof SourceProvider) {
+  if (Object.getPrototypeOf(constructor).name === 'SourceProvider') {
+
     providerTypes[typeName] = constructor;
     const settingsElementName = getSettingsElementName(constructor);
     if (!isNull(settingsElementName)) {
@@ -65,11 +66,17 @@ export const addSourceProvider = (type, name, settings = {}) => {
     name = type;
   }
 
-  if (!hasType(type) || has(name)) {
+  if (!hasSourceProviderType(type) || hasSourceProvider(name)) {
     return null;
   }
 
-  return providers[name] = new providerTypes[type](settings);
+  const SourceProvider = providerTypes[type];
+
+
+  return providers[name] = new SourceProvider({
+    ...SourceProvider.settingsDefaults,
+    ...settings
+  });
 };
 
 export const getSourceProvider = (providerName) => {

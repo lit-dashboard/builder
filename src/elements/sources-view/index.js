@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
-import store from '@lit-dashboard/lit-dashboard';
+import { store } from '@lit-dashboard/lit-dashboard';
 import { connect } from 'pwa-helpers';
 import './source';
 import { map } from 'lodash';

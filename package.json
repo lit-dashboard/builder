@@ -49,11 +49,14 @@
     "url": "git+https://github.com/lit-dashboard/builder.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/lit-dashboard/builder/issues"
   },
   "homepage": "https://github.com/lit-dashboard/builder#readme",
+  "bin": {
+    "create-dashboard": "./bin/create.js"
+  },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
     "@babel/core": "^7.1.2",
@@ -98,6 +101,7 @@
     "codemirror": "^5.50.2",
     "codemirror-grammar-mode": "^0.1.9",
     "d3": "^5.15.0",
+    "download-git-repo": "^3.0.2",
     "electron-connect": "^0.6.3",
     "electron-is-dev": "^1.1.0",
     "express": "^4.17.1",

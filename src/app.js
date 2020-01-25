@@ -49,6 +49,7 @@ window.dashboardApp = {
   toastr,
   CurvedArrow,
   setup,
+  store,
   registerWidget: function(tagName, config) {
     const { widgets } = store.getState();
     const widgetExists = tagName in widgets.registered;

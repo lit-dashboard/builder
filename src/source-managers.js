@@ -6,6 +6,7 @@ import store from '@lit-dashboard/lit-dashboard/store';
 import { 
   initSources, removeSources 
 } from '@lit-dashboard/lit-dashboard/actions';
+import { SourceManager } from '@lit-dashboard/lit-dashboard';
 
 let managers = {};
 
