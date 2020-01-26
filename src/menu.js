@@ -1,14 +1,13 @@
 import { isEditModeOn } from '@lit-dashboard/lit-dashboard/storage';
-import { remote } from 'electron';
+import { remote, shell } from 'electron';
 import { triggerEvent } from './events';
 
 const { Menu, MenuItem, app } = remote;
-
-let menu = Menu.getApplicationMenu();
+const isMac = process.platform === 'darwin';
 
 const newMenu = new Menu();
 
-let fileMenuItem = new MenuItem({ 
+const fileMenuItem = new MenuItem({ 
   label: 'File', 
   submenu: [
     { 
@@ -35,7 +34,7 @@ let fileMenuItem = new MenuItem({
   ] 
 });
 
-let dashboardMenuItem = new MenuItem({ 
+const dashboardMenuItem = new MenuItem({ 
   label: 'Dashboard',
   submenu: [
     { 
@@ -56,24 +55,84 @@ let dashboardMenuItem = new MenuItem({
   ] 
 });
 
+const editMenuItem = new MenuItem({
+  label: 'Edit',
+  submenu: [
+    { role: 'undo' },
+    { role: 'redo' },
+    { type: 'separator' },
+    { role: 'cut' },
+    { role: 'copy' },
+    { role: 'paste' },
+    ...(isMac ? [
+      { role: 'pasteAndMatchStyle' },
+      { role: 'delete' },
+      { role: 'selectAll' },
+      { type: 'separator' },
+      {
+        label: 'Speech',
+        submenu: [
+          { role: 'startspeaking' },
+          { role: 'stopspeaking' }
+        ]
+      }
+    ] : [
+      { role: 'delete' },
+      { type: 'separator' },
+      { role: 'selectAll' }
+    ])
+  ]
+});
 
+const viewMenuItem = new MenuItem( {
+  label: 'View',
+  submenu: [
+    { role: 'reload' },
+    { role: 'forcereload' },
+    { role: 'toggledevtools' },
+    { type: 'separator' },
+    { role: 'resetzoom' },
+    { role: 'zoomin' },
+    { role: 'zoomout' },
+    { type: 'separator' },
+    { role: 'togglefullscreen' }
+  ]
+});
 
-newMenu.append(menu.items[0]);
+const windowMenuItem = new MenuItem({
+  label: 'Window',
+  submenu: [
+    { role: 'minimize' },
+    { role: 'zoom' },
+    ...(isMac ? [
+      { type: 'separator' },
+      { role: 'front' },
+      { type: 'separator' },
+      { role: 'window' }
+    ] : [
+      { role: 'close' }
+    ])
+  ]
+});
+
+const helpMenuItem = new MenuItem({
+  role: 'help',
+  submenu: [
+    {
+      label: 'Learn More',
+      click: async () => {
+        await shell.openExternal('https://electronjs.org')
+      }
+    }
+  ]
+});
+
 newMenu.append(fileMenuItem);
 newMenu.append(dashboardMenuItem);
-
-if (menu.items.length === 6) {
-  newMenu.append(menu.items[2]);
-  newMenu.append(menu.items[3]);
-  newMenu.append(menu.items[4]);
-  newMenu.append(menu.items[5]);
-} else {
-  newMenu.append(menu.items[3]);
-  newMenu.append(menu.items[4]);
-  newMenu.append(menu.items[5]);
-  newMenu.append(menu.items[6]);
-}
-
+newMenu.append(editMenuItem);
+newMenu.append(viewMenuItem);
+newMenu.append(windowMenuItem);
+newMenu.append(helpMenuItem);
 
 Menu.setApplicationMenu(newMenu); 
 
