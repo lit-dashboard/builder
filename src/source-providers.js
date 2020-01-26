@@ -1,5 +1,5 @@
 import { isNull, kebabCase } from 'lodash';
-import { ProviderSettings, SourceProvider } from '@lit-dashboard/lit-dashboard';
+import { ProviderSettings } from '@lit-dashboard/lit-dashboard';
 
 const providerTypes = {};
 const providers = {};

@@ -1,8 +1,8 @@
 import { LitElement, html, css } from 'lit-element';
 import './no-dashboard';
 import { 
-  get as getProvider, 
-  getNames as getProviderNames 
+  getSourceProvider,
+  getSourceProviderNames,
 } from '../source-providers';
 import { dirname } from 'path-webpack';
 import { isElectron } from '../setup';
@@ -125,8 +125,6 @@ class RobotDashboards extends LitElement {
     catch(e) {
       console.error('Error opening dashboard', e);
     }
-    //window.require('../widgets');
-    //window.require('../source-providers');
     this.requestUpdate();
   }
 
@@ -143,12 +141,13 @@ class RobotDashboards extends LitElement {
       };
     }
 
-    getProviderNames().map(name => {
-      const provider = getProvider(name);
+    getSourceProviderNames().map(name => {
+      const provider = getSourceProvider(name);
       config.providerSettings[name] = provider.settings;
     });
 
     const configPath = storage.getDashboardConfigPath();
+
     try {
       writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
       toastr.success(`Layout saved to ${configPath}`); 
