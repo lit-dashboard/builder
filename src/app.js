@@ -6,7 +6,6 @@ import store from '@lit-dashboard/lit-dashboard/store';
 import { registerWidget } from '@lit-dashboard/lit-dashboard/actions';
 import toastr from 'toastr';
 import 'toastr/build/toastr.css';
-import * as CurvedArrow from './curved-arrow';
 import { getPageX, getPageY } from './mouse';
 import {
   addSourceProviderType,
@@ -47,7 +46,6 @@ window.dashboardApp = {
   onEvent, 
   triggerEvent,
   toastr,
-  CurvedArrow,
   setup,
   store,
   registerWidget: function(tagName, config) {
