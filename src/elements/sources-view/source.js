@@ -202,13 +202,13 @@ class SourceView extends LitElement {
   render() {
 
     return html`
-      <div 
-        class="source" 
-        draggable="true"
-        @dragstart="${this.addDragImage}"
-        @dragend="${this.addSource}"
-      >
-        <header class="${this.expanded ? 'expanded' : 'collapsed'}">
+      <div class="source">
+        <header 
+          class="${this.expanded ? 'expanded' : 'collapsed'}"
+          draggable="true"
+          @dragstart="${this.addDragImage}"
+          @dragend="${this.addSource}"
+        >
           <span class="key" title="${this.label}">
             ${this.hasSources() ? html`
               <span class="caret" @click="${this.toggleExpand}">
