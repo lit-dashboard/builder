@@ -28,11 +28,15 @@ class SourcesView extends connect(store)(LitElement) {
       }
 
       header .key {
-        width: 55%;
+        width: 44%;
       }
 
       header .value {
-        width: 38%;
+        width: 27%;
+      }
+
+      header .type {
+        width: 20%;
       }
     `
   }
@@ -70,6 +74,7 @@ class SourcesView extends connect(store)(LitElement) {
       <header>
         <span class="key">Key</span>
         <span class="value">Value</span>
+        <span class="type">Type</span>
       </header>
 
       ${map(this.sources.__sources__ || [], (source, name) => html`

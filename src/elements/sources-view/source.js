@@ -22,13 +22,20 @@ class SourceView extends LitElement {
       }
 
       header .key {
-        width: 55%;
+        width: 44%;
         display: flex;
         white-space: nowrap;
       }
 
       header .value {
-        width: 38%;
+        width: 27%;
+        overflow: auto;
+        white-space: nowrap;
+        display: inline-block;
+      }
+
+      header .type {
+        width: 20%;
         overflow: auto;
         white-space: nowrap;
         display: inline-block;
@@ -59,6 +66,11 @@ class SourceView extends LitElement {
       }
 
       header .value::-webkit-scrollbar { 
+        width: 0 !important;
+        height: 0 !important;
+      }
+
+      header .type::-webkit-scrollbar { 
         width: 0 !important;
         height: 0 !important;
       }
@@ -197,7 +209,7 @@ class SourceView extends LitElement {
         @dragend="${this.addSource}"
       >
         <header class="${this.expanded ? 'expanded' : 'collapsed'}">
-          <span class="key">
+          <span class="key" title="${this.label}">
             ${this.hasSources() ? html`
               <span class="caret" @click="${this.toggleExpand}">
                 <iron-icon icon="vaadin:caret-right"></iron-icon>
@@ -208,6 +220,9 @@ class SourceView extends LitElement {
           </span>
           <span class="value">
             ${this.hasValue() ? this.renderValue() : ''}
+          </span>
+          <span class="type" title="${this.source.__type__}">
+            ${this.source.__type__}
           </span>
         </header>
         ${this.hasSources() && this.expanded ? html`

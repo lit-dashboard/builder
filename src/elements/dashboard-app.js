@@ -23,7 +23,7 @@ class DashboardApp extends LitElement {
       }
 
       side-panel {
-        width: 400px;
+        width: 500px;
         display: block;
         overflow: auto;
         height: 100vh;
@@ -77,7 +77,7 @@ class DashboardApp extends LitElement {
               const drawerTitle = node.querySelector('.mdc-drawer__title');
               const drawerSubtitle = node.querySelector('.mdc-drawer__subtitle');
               node.style.position = 'fixed';
-              node.style.width = '400px';
+              node.style.width = '500px';
               drawerTitle.remove();
               drawerSubtitle.remove();
               observer.disconnect();
@@ -85,7 +85,7 @@ class DashboardApp extends LitElement {
               const styleNode = document.createElement("style");
               styleNode.appendChild(document.createTextNode(`
                 .mdc-drawer.mdc-drawer--open:not(.mdc-drawer--closing) + .mdc-drawer-app-content {
-                  margin-left: 400px !important;
+                  margin-left: 500px !important;
                 }
               `));
               node.appendChild(styleNode);
