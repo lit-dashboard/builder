@@ -82,16 +82,16 @@ class SourceView extends LitElement {
 
       header .caret [icon] {
         cursor: pointer;
-        font-size: 12px;
+        font-size: 11px;
         display: none;
-        width: 17px;
+        width: 15px;
       }
 
-      header.expanded .caret [icon$="caret-down"] {
+      header.expanded .caret [icon$="angle-down"] {
         display: inline-block;
       }
 
-      header.collapsed .caret [icon$="caret-right"] {
+      header.collapsed .caret [icon$="angle-right"] {
         display: inline-block;
       }
     `;
@@ -212,8 +212,8 @@ class SourceView extends LitElement {
           <span class="key" title="${this.label}">
             ${this.hasSources() ? html`
               <span class="caret" @click="${this.toggleExpand}">
-                <iron-icon icon="vaadin:caret-right"></iron-icon>
-                <iron-icon icon="vaadin:caret-down"></iron-icon>
+                <iron-icon icon="vaadin:angle-right"></iron-icon>
+                <iron-icon icon="vaadin:angle-down"></iron-icon>
               </span>
             `: ''}
             <label>${this.label}</label>
