@@ -7,6 +7,21 @@ const isMac = process.platform === 'darwin';
 
 const newMenu = new Menu();
 
+const appMenuItem = new MenuItem({
+  label: 'lit-dashboard',
+  submenu: [
+    { role: 'about' },
+    { type: 'separator' },
+    { role: 'services' },
+    { type: 'separator' },
+    { role: 'hide' },
+    { role: 'hideothers' },
+    { role: 'unhide' },
+    { type: 'separator' },
+    { role: 'quit' }
+  ]
+});
+
 const fileMenuItem = new MenuItem({ 
   label: 'File', 
   submenu: [
@@ -126,6 +141,10 @@ const helpMenuItem = new MenuItem({
     }
   ]
 });
+
+if (isMac) {
+  newMenu.append(appMenuItem);
+}
 
 newMenu.append(fileMenuItem);
 newMenu.append(dashboardMenuItem);

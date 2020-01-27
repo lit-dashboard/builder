@@ -1,5 +1,6 @@
 {
   "name": "@lit-dashboard/builder",
+  "productName": "lit-dashboard",
   "version": "1.0.3",
   "description": "",
   "main": "main.js",
