@@ -4,6 +4,8 @@ import './sources-view';
 import '@vaadin/vaadin-tabs';
 import store from '@lit-dashboard/lit-dashboard/store';
 import { connect } from 'pwa-helpers';
+import '@vaadin/vaadin-lumo-styles';
+
 
 class SidePanel extends connect(store)(LitElement) {
 
@@ -21,12 +23,43 @@ class SidePanel extends connect(store)(LitElement) {
         display: block;
       }
 
-      vaadin-accordion-panel {
-        border: none;
+      .expander {
+        margin-bottom: 10px;
       }
 
-      vaadin-accordion-panel::part(summary) {
+      .expander header {
         padding-left: 15px;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+
+      .expander .content {
+        display: none;
+      }
+
+      .expander [icon] {
+        width: 15px;
+        color: gray;
+      }
+
+      .expander [icon="vaadin:angle-right"] {
+        display: inline-block;
+      }
+
+      .expander [icon="vaadin:angle-down"] {
+        display: none;
+      }
+
+      .expander.expanded .content {
+        display: block;
+      }
+
+      .expander.expanded [icon="vaadin:angle-right"] {
+        display: none;
+      }
+
+      .expander.expanded [icon="vaadin:angle-down"] {
+        display: inline-block;
       }
     `;
   }
@@ -37,19 +70,28 @@ class SidePanel extends connect(store)(LitElement) {
     this.providerNames = [];
   }
 
+  toggleExpand(ev) {
+    const [expander] = ev.path;
+    $(expander).closest('.expander').toggleClass('expanded');
+  }
+
   render() {
     return html`
       <div class="tab-body">
         ${this.selectedTab === 0 ? html`
           ${this.providerNames.length > 0 ? html`
-            <vaadin-accordion>
-              ${this.providerNames.map(providerName => html`
-                <vaadin-accordion-panel>
-                  <div slot="summary">${providerName}</div>
+            ${this.providerNames.map(providerName => html`
+              <div class="expander">
+                <header @click="${this.toggleExpand}">
+                  <iron-icon icon="vaadin:angle-right"></iron-icon>
+                  <iron-icon icon="vaadin:angle-down"></iron-icon>
+                  ${providerName}
+                </header>
+                <div class="content">
                   <sources-view provider-name="${providerName}"></sources-view>
-                </vaadin-accordion-panel>
-              `)}
-            </vaadin-accordion>
+                </div>
+              </div>
+            `)}
           ` : ''}
         ` : html`
           <widget-menu></widget-menu>

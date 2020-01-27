@@ -26,6 +26,45 @@ class WidgetMenu extends connect(store)(LitElement) {
         padding: 20px;
         margin: 10px 5px;
       }
+
+      .expander {
+        margin-bottom: 10px;
+      }
+
+      .expander header {
+        padding-left: 15px;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+
+      .expander .content {
+        display: none;
+      }
+
+      .expander [icon] {
+        width: 15px;
+        color: gray;
+      }
+
+      .expander [icon="vaadin:angle-right"] {
+        display: inline-block;
+      }
+
+      .expander [icon="vaadin:angle-down"] {
+        display: none;
+      }
+
+      .expander.expanded .content {
+        display: block;
+      }
+
+      .expander.expanded [icon="vaadin:angle-right"] {
+        display: none;
+      }
+
+      .expander.expanded [icon="vaadin:angle-down"] {
+        display: inline-block;
+      }
     `;
   }
 
@@ -53,27 +92,36 @@ class WidgetMenu extends connect(store)(LitElement) {
       }))
   }
 
+  toggleExpand(ev) {
+    const [expander] = ev.path;
+    $(expander).closest('.expander').toggleClass('expanded');
+  }
+
   render() {
     return html`
-      <vaadin-accordion>
         ${this.categories.map(category => html`
-          <vaadin-accordion-panel>
-            <div slot="summary">${category.label}</div>
-            <vaadin-vertical-layout>
-              ${category.types.map(type => html`
-                <widget-menu-item 
-                  type="${type.widgetType}"
-                  label="${type.label}"
-                  image="${type.image}"
-                  minx="${type.minX}"
-                  miny="${type.minY}"
-                >
-                </widget-menu-item>
-              `)}   
-            </vaadin-vertical-layout>
-          </vaadin-accordion-panel>
+          <div class="expander">
+            <header @click="${this.toggleExpand}">
+              <iron-icon icon="vaadin:angle-right"></iron-icon>
+              <iron-icon icon="vaadin:angle-down"></iron-icon>
+              ${category.label}
+            </header>
+            <div class="content">
+              <vaadin-vertical-layout>
+                ${category.types.map(type => html`
+                  <widget-menu-item 
+                    type="${type.widgetType}"
+                    label="${type.label}"
+                    image="${type.image}"
+                    minx="${type.minX}"
+                    miny="${type.minY}"
+                  >
+                  </widget-menu-item>
+                `)}   
+              </vaadin-vertical-layout>
+            </div>
+          </div>
         `)}
-      </vaadin-accordion>
     `;
   }
 }
