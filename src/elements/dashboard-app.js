@@ -26,7 +26,6 @@ class DashboardApp extends LitElement {
         width: 500px;
         display: block;
         overflow: auto;
-        height: 100vh;
       }
     `;
   }
@@ -86,6 +85,10 @@ class DashboardApp extends LitElement {
               styleNode.appendChild(document.createTextNode(`
                 .mdc-drawer.mdc-drawer--open:not(.mdc-drawer--closing) + .mdc-drawer-app-content {
                   margin-left: 500px !important;
+                }
+                .mdc-drawer__content::-webkit-scrollbar {
+                  width: 0 !important;
+                  height: 0 !important;
                 }
               `));
               node.appendChild(styleNode);
