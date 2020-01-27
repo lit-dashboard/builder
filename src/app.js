@@ -4,8 +4,6 @@ import './elements/components';
 import './elements/dashboard-app';
 import store from '@lit-dashboard/lit-dashboard/store';
 import { registerWidget } from '@lit-dashboard/lit-dashboard/actions';
-import toastr from 'toastr';
-import 'toastr/build/toastr.css';
 import { getPageX, getPageY } from './mouse';
 import {
   addSourceProviderType,
@@ -24,6 +22,7 @@ import {
 } from './source-managers';
 import { onEvent, triggerEvent } from './events';
 import * as setup from './setup';
+import { notifyError, notifySuccess } from './notifications';
 
 window.$ = window.jQuery = require('jquery');
 window.d3 = require('d3');
@@ -45,8 +44,9 @@ window.dashboardApp = {
   normalizeKey,
   onEvent, 
   triggerEvent,
-  toastr,
   setup,
+  notifyError,
+  notifySuccess,
   store,
   registerWidget: function(tagName, config) {
     const { widgets } = store.getState();

@@ -10,7 +10,7 @@ import { isDev } from 'electron-is-dev';
 import { readFileSync, writeFileSync, existsSync, watch } from 'fs';
 import { remote } from 'electron';
 import { storage, store } from '@lit-dashboard/lit-dashboard';
-import toastr from 'toastr';
+import { notifyError, notifySuccess } from '../notifications';
 import { onEvent } from '../events';
 import { getPageX, getPageY } from '../mouse';
 
@@ -87,7 +87,7 @@ class RobotDashboards extends LitElement {
       }
     }
     catch(e) {
-      toastr.error(`Failed to open Dashboard: ${e.message}`);
+      notifyError(`Failed to open Dashboard: ${e.message}`);
     }
   }
 
@@ -150,10 +150,10 @@ class RobotDashboards extends LitElement {
 
     try {
       writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
-      toastr.success(`Layout saved to ${configPath}`); 
+      notifySuccess(`Layout saved to ${configPath}`); 
     }
     catch(e) {
-      toastr.error(`Failed to save layout: ${e.message}`);
+      notifyError(`Failed to save layout: ${e.message}`);
     }
   }
 
@@ -169,7 +169,7 @@ class RobotDashboards extends LitElement {
       return config;
     }
     catch(e) {
-      toastr.error(`Failed to open layout: ${e.message}`);
+      notifyError(`Failed to open layout: ${e.message}`);
       return {};
     }
   }
@@ -193,13 +193,13 @@ class RobotDashboards extends LitElement {
     const widgetId = widgetNode.getAttribute('widget-id');
     if (!widgetId) {
       // TODO: Make link that selects element in DOM?
-      toastr.error(`Widget of type ${widgetType} does not have a 'widget-id' attribute.`);
+      notifyError(`Widget of type ${widgetType} does not have a 'widget-id' attribute.`);
       return;
     }
 
     if (widgetId in this.widgets) {
       // TODO: Make link that selects element in DOM?
-      toastr.error(`Widget of type ${widgetType} with widget-id '${widgetId}' already exists!`);
+      notifyError(`Widget of type ${widgetType} with widget-id '${widgetId}' already exists!`);
       return;
     }
 
@@ -298,9 +298,8 @@ class RobotDashboards extends LitElement {
     const widgetNode = this.widgets[this.selectedWidget];
 
     if (!widgetNode) {
-      toastr.error(`
-        Failed to add source '${sourceKey}'. No widget at that 
-        position can be found.`
+      notifyError(`
+        Failed to add source. No widget at that position can be found.`
       );
       return;
     }
