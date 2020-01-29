@@ -22,20 +22,13 @@ class SourceView extends LitElement {
       }
 
       header .key {
-        width: 44%;
+        width: 60%;
         display: flex;
         white-space: nowrap;
       }
 
       header .value {
-        width: 27%;
-        overflow: auto;
-        white-space: nowrap;
-        display: inline-block;
-      }
-
-      header .type {
-        width: 20%;
+        width: 35%;
         overflow: auto;
         white-space: nowrap;
         display: inline-block;
@@ -131,7 +124,6 @@ class SourceView extends LitElement {
 
   addSource() {
     const sourceKey = this.source.__key__;
-    const sourceType = this.source.__type__;
 
     if (typeof sourceKey !== 'string') {
       return;
@@ -142,8 +134,7 @@ class SourceView extends LitElement {
       composed: true, 
       detail: {
         providerName: this.providerName,
-        key: sourceKey,
-        type: sourceType
+        key: sourceKey
       }
     });
 
@@ -174,23 +165,22 @@ class SourceView extends LitElement {
   }
 
   renderValue() {
-    const type = this.source.__type__;
     const value = this.source.__value__;
 
-    if (type === 'Boolean') {
+    if (typeof value === 'boolean') {
       return html`
         <input disabled type="checkbox" ?checked="${value}" />
         <label>${value.toString()}</label>
       `;
-    } else if (type === 'String') {
+    } else if (typeof value === 'string') {
       return html`
         "${value}"
       `;
-    } else if (type === 'Number') {
+    } else if (typeof value === 'number') {
       return html`
         ${value}
       `;
-    } else if (type === 'Array') {
+    } else if (value instanceof Array) {
       return html`
         [${value.join(', ')}]
       `;
@@ -220,9 +210,6 @@ class SourceView extends LitElement {
           </span>
           <span class="value">
             ${this.hasValue() ? this.renderValue() : ''}
-          </span>
-          <span class="type" title="${this.source.__type__}">
-            ${this.source.__type__}
           </span>
         </header>
         ${this.hasSources() && this.expanded ? html`
