@@ -80,7 +80,7 @@
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
     "dotenv": "^6.1.0",
-    "electron": "^7.0.0",
+    "electron": "^18.3.7",
     "electron-builder": "^22.2.0",
     "electron-reload-webpack-plugin": "^2.0.4",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
